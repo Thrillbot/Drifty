@@ -86,7 +86,7 @@ public class Fenders : MonoBehaviour
                     break;
                 case "ft":
 					Vector3 tf = axle[i].ft.transform.localPosition;
-                    axle[i].ft.transform.localPosition = new Vector3(tf.x, tf.y, moveVal);
+                    axle[i].ft.transform.localPosition = new Vector3(tf.x, tf.y, moveVal * 0.01f);
 					break;                
 				case "fb":
 					Vector3 bf = axle[i].fb.transform.localPosition;
@@ -94,11 +94,11 @@ public class Fenders : MonoBehaviour
 					break;                
 				case "rt":
 					Vector3 tr = axle[i].rt.transform.localPosition;
-                    axle[i].rt.transform.localPosition = new Vector3(tr.x,tr.y, moveVal);
+                    axle[i].rt.transform.localPosition = new Vector3(tr.x,tr.y, moveVal * 0.01f);
 					break;                
 				case "rb":
 					Vector3 br = axle[i].rb.transform.localPosition;
-                    axle[i].rb.transform.localPosition = new Vector3(br.x,br.y, moveVal);
+                    axle[i].rb.transform.localPosition = new Vector3(br.x,br.y, moveVal * 0.01f);
 					break;
 
 
