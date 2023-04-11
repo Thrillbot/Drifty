@@ -4,18 +4,49 @@ using UnityEngine;
 
 public class Wheel : MonoBehaviour
 {
-	public Transform spokes;
-	public Transform dish;
-	public Transform size;
+	[System.Serializable]
+	public struct Axle
+	{
+		public GameObject wheel;
+        public Transform spokes;
+        public Transform dish;
+        public Transform size;
+	}
+
+	public Axle[] axle;
+
+	public BuildMenu carRoot;
 
 	private void Awake()
 	{
-		spokes = GetComponent<Transform>().Find("Wheel/WheelRoot/SpokeOffset");
-		dish = GetComponent<Transform>().Find("Wheel/WheelRoot/SpokeOffset/DishOffset");
-        size = GetComponent<Transform>().Find("Wheel/WheelRoot");
+		FindNewWheelBones();
 	}
 
-	public void MoveSpokes (System.Single moveVal)
+    public void FindNewWheelBones()
+    {
+        for (int i = 0; i < axle.Length; i++)
+        {
+            axle[i].spokes = axle[i].wheel.GetComponent<Transform>().Find("Wheel/WheelRoot/SpokeOffset");
+            axle[i].dish = axle[i].wheel.GetComponent<Transform>().Find("Wheel/WheelRoot/SpokeOffset/DishOffset");
+            axle[i].size = axle[i].wheel.GetComponent<Transform>().Find("Wheel/WheelRoot");
+        }
+    }
+
+    public void ChangeWheel(int wheelIndex)
+    {
+		for (int i = 0; i < axle.Length; i++)
+		{
+			GameObject oldWheel = axle[i].wheel;
+            axle[i].wheel = Instantiate(carRoot.wheels[wheelIndex]);
+            axle[i].wheel.transform.parent = oldWheel.transform.parent;
+            axle[i].wheel.transform.position = oldWheel.transform.position;
+            axle[i].wheel.transform.eulerAngles = oldWheel.transform.eulerAngles;
+			Destroy(oldWheel);
+            FindNewWheelBones();
+        }
+    }
+
+    public void MoveSpokes (System.Single moveVal)
 	{
 		MoveBone("spokes", moveVal);
 	}	
@@ -34,24 +65,30 @@ public class Wheel : MonoBehaviour
 
 	private void MoveBone (string bName, float moveVal)
 	{
-		switch (bName)
+		for (int i = 0; i < axle.Length; i++)
 		{
-			case "spokes":
-				Vector3 sp = spokes.transform.localPosition;
-                spokes.transform.localPosition = new Vector3(sp.x, moveVal * 0.001f, sp.z);
-			break;
-			case "dish":
-                Vector3 dp = dish.transform.localPosition;
-                dish.transform.localPosition = new Vector3(dp.x,moveVal * 0.001f, dp.z);
-			break;			
-			case "size":
-                Vector3 s = size.transform.localScale;
-                size.transform.localScale = new Vector3(moveVal,s.y,moveVal);
-			break;			
-			case "width":
-                Vector3 w = size.transform.localScale;
-                size.transform.localScale = new Vector3(w.x,moveVal, w.z);
-			break;
+			if (axle[i].spokes == null)
+				return;
+
+			switch (bName)
+			{
+				case "spokes":
+					Vector3 sp = axle[i].spokes.transform.localPosition;
+                    axle[i].spokes.transform.localPosition = new Vector3(sp.x, moveVal * 0.001f, sp.z);
+					break;
+				case "dish":
+					Vector3 dp = axle[i].dish.transform.localPosition;
+                    axle[i].dish.transform.localPosition = new Vector3(dp.x, moveVal * 0.001f, dp.z);
+					break;
+				case "size":
+					Vector3 s = axle[i].size.transform.localScale;
+                    axle[i].size.transform.localScale = new Vector3(moveVal, s.y, moveVal);
+					break;
+				case "width":
+					Vector3 w = axle[i].size.transform.localScale;
+                    axle[i].size.transform.localScale = new Vector3(w.x, moveVal, w.z);
+					break;
+			}
 		}
 	}
 }
