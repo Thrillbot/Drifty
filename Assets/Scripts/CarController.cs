@@ -12,7 +12,7 @@ namespace Drifty
         {
             engine.throttle = Input.GetAxis("Vertical");
             rigidbody.AddForce(transform.forward * engine.CurrentHorsePower());
-            rigidbody.AddTorque(Vector3.up * Input.GetAxis("Vertical") * steeringTorque * rigidbody.velocity.sqrMagnitude);
+            rigidbody.AddTorque(Vector3.up * Input.GetAxis("Horizontal") * steeringTorque * rigidbody.velocity.sqrMagnitude);
         }
     }
 }

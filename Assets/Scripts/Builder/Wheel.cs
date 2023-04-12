@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Wheel : MonoBehaviour
 {
-	[System.Serializable]
+    public GameObject[] wheelList;
+
+    [System.Serializable]
 	public struct Axle
 	{
 		public GameObject wheel;
@@ -14,8 +16,6 @@ public class Wheel : MonoBehaviour
 	}
 
 	public Axle[] axle;
-
-	public BuildMenu carRoot;
 
 	private void Awake()
 	{
@@ -37,7 +37,7 @@ public class Wheel : MonoBehaviour
 		for (int i = 0; i < axle.Length; i++)
 		{
 			GameObject oldWheel = axle[i].wheel;
-            axle[i].wheel = Instantiate(carRoot.wheels[wheelIndex]);
+            axle[i].wheel = Instantiate(wheelList[wheelIndex]);
             axle[i].wheel.transform.parent = oldWheel.transform.parent;
             axle[i].wheel.transform.position = oldWheel.transform.position;
             axle[i].wheel.transform.eulerAngles = oldWheel.transform.eulerAngles;

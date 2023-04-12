@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class BuildMenu : MonoBehaviour
 {
-	public GameObject[] wheels; 
-	public GameObject[] fenders; 
-
 	private int rot = 120;
+
 	public void RotateCar(int rotValue)
 	{
 		rot += rotValue;
